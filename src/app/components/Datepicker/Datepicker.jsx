@@ -1,49 +1,13 @@
-"use client";
-import { useState } from "react";
 import styles from "./styles.module.css";
 
-const Datepicker = () => {
-  const calendar = getYearList(2022, 2023);
+const Datepicker = ({
+  changePicker,
+  calendar,
+  selectedDate,
+  changeDate,
+  interval,
+}) => {
   const weekDays = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
-  const today = new Date();
-
-  const [selectedDate, setSelectedDate] = useState({
-    year: today.getFullYear(),
-    month: today.getMonth(),
-    day: today.getDate(),
-  });
-
-  console.log(selectedDate);
-  function getDaysInMonth(year, month) {
-    return new Date(year, month, 0).getDate();
-  }
-
-  function getMonthList(year) {
-    const months = [
-      { name: "Janeiro", days: getDaysInMonth(year, 1) },
-      { name: "Fevereiro", days: getDaysInMonth(year, 2) },
-      { name: "Março", days: getDaysInMonth(year, 3) },
-      { name: "Abril", days: getDaysInMonth(year, 4) },
-      { name: "Maio", days: getDaysInMonth(year, 5) },
-      { name: "Junho", days: getDaysInMonth(year, 6) },
-      { name: "Julho", days: getDaysInMonth(year, 7) },
-      { name: "Agosto", days: getDaysInMonth(year, 8) },
-      { name: "Setembro", days: getDaysInMonth(year, 9) },
-      { name: "Outubro", days: getDaysInMonth(year, 10) },
-      { name: "Novembro", days: getDaysInMonth(year, 11) },
-      { name: "Dezembro", days: getDaysInMonth(year, 12) },
-    ];
-    return months;
-  }
-
-  function getYearList(startYear, endYear) {
-    const years = [];
-    for (let year = startYear; year <= endYear; year++) {
-      const months = getMonthList(year);
-      years.push({ year, months });
-    }
-    return years;
-  }
 
   function getFirstDayOfWeek(month, year) {
     const date = new Date(Date.UTC(year, month, 1));
@@ -58,6 +22,9 @@ const Datepicker = () => {
     (elem) => elem.year - 1 === selectedDate.year - 1
   );
 
+  const month = actualYearList.months[selectedDate.month].name;
+  const year = actualYearList.year;
+
   const firstDay = getFirstDayOfWeek(selectedDate.month, selectedDate.year);
 
   const getFirstRow = () => {
@@ -65,11 +32,12 @@ const Datepicker = () => {
 
     const lastMonthSize = firstDay;
     const actualMonthFirstRowSize = 7 - firstDay;
-    let lastMonthDays = beforeActualYearList.months[selectedDate.month].days;
+    let lastMonthDays =
+      beforeActualYearList.months[selectedDate.month].days - firstDay;
     //last month
     for (let i = 0; i < lastMonthSize; i++) {
+      lastMonthDays++;
       row.push({ type: "last", day: lastMonthDays });
-      lastMonthDays--;
     }
 
     //first row actual month
@@ -113,6 +81,44 @@ const Datepicker = () => {
   const matrixDays = getDaysMatrixAfterFirstRow();
   return (
     <div>
+      <div>
+        <span
+          onClick={() => {
+            const month = selectedDate.month - 1;
+            if (month === -1 && selectedDate.year - 1 > interval.begin) {
+              alert("Já está no ano mínimo");
+              return;
+            }
+            if (month === -1) {
+              changeDate("year", selectedDate.year - 1);
+              changeDate("month", 12);
+            } else {
+              changeDate("month", selectedDate.month - 1);
+            }
+          }}
+        >
+          {"<-"}
+        </span>
+        <div onClick={changePicker}>
+          {month} {year}
+        </div>
+        <span
+          onClick={() => {
+            const month = selectedDate.month + 1;
+            if (month === 12 && selectedDate.year + 1 > interval.end) {
+              alert("Já está no ano máximo");
+              return;
+            }
+            if (month === 12) {
+              changeDate("year", selectedDate.year + 1);
+            } else {
+              changeDate("month", selectedDate.month + 1);
+            }
+          }}
+        >
+          {"->"}
+        </span>
+      </div>
       <table className={styles.calendar}>
         <thead>
           <tr>
