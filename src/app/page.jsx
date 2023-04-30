@@ -88,7 +88,7 @@ export default function Home() {
 
   return (
     <main className={styles.main}>
-      {/* {datepickerType ? (
+      {datepickerType ? (
         <Datepicker
           changePicker={changePicker}
           calendar={calendar}
@@ -108,7 +108,7 @@ export default function Home() {
           minimumYearVerification={minimumYearVerification}
           maximumYearVerification={maximumYearVerification}
         />
-      )} */}
+      )}
     </main>
   );
 }
