@@ -6,8 +6,8 @@ const Monthpicker = ({
   changePicker,
   calendar,
   selectedDate,
-  minimumYearVerification,
-  maximumYearVerification,
+  changeDate,
+  interval,
 }) => {
   const actualYearList = calendar.find(
     (elem) => elem.year === selectedDate.year
@@ -40,12 +40,22 @@ const Monthpicker = ({
     );
   };
 
+  const previousYear = () => {
+    if (selectedDate.year <= interval.begin) alert("Já está no mínimo");
+    else changeDate({ year: selectedDate.year - 1 });
+  };
+
+  const nextYear = () => {
+    if (selectedDate.year >= interval.end) alert("Já está no mínimo");
+    else changeDate({ year: selectedDate.year + 1 });
+  };
+
   return (
     <div>
       <div>
-        <span onClick={minimumYearVerification}>{"<-"}</span>
+        <span onClick={previousYear}>{"<-"}</span>
         <div onClick={changePicker}>{actualYearList.year}</div>
-        <span onClick={maximumYearVerification}>{"->"}</span>
+        <span onClick={nextYear}>{"->"}</span>
       </div>
       <div>
         <div style={{ display: "flex" }}>{tableLine(0, 3)}</div>

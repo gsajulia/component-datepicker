@@ -59,7 +59,11 @@ export default function Home() {
   };
 
   const minimumYearVerification = (month = null) => {
-    if (month === 11 && selectedDate.year - 1 < interval.begin) {
+    debugger;
+    if (
+      (month === 11 && selectedDate.year - 1 < interval.begin) ||
+      (month !== null && selectedDate.year - 1 < interval.begin)
+    ) {
       alert("Já está no ano mínimo");
       return;
     }
@@ -106,8 +110,8 @@ export default function Home() {
           changePicker={changePicker}
           calendar={calendar}
           selectedDate={selectedDate}
-          minimumYearjVerification={minimumYearVerification}
-          maximumYearVerification={maximumYearVerification}
+          interval={interval}
+          changeDate={changeDate}
         />
       )}
     </main>
