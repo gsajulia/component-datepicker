@@ -1,3 +1,4 @@
+import DraggableSection from "../DraggableSection/DraggableSection";
 import styles from "./styles.module.css";
 
 const Daypicker = ({
@@ -112,15 +113,7 @@ const Daypicker = ({
           </tr>
         </thead>
         <tbody>
-          {matrixDays.map((_, i) => {
-            return (
-              <tr key={i}>
-                {matrixDays[i].map((elem, j) => {
-                  return <td key={j}>{elem.day}</td>;
-                })}
-              </tr>
-            );
-          })}
+          <DraggableSection matrixDays={matrixDays} />
         </tbody>
       </table>
     </div>
