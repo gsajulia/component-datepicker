@@ -46,7 +46,7 @@ const Monthpicker = ({
   };
 
   const nextYear = () => {
-    if (selectedDate.year >= interval.end) alert("Já está no mínimo");
+    if (selectedDate.year >= interval.end) alert("Já está no máximo");
     else changeDate({ year: selectedDate.year + 1 });
   };
 

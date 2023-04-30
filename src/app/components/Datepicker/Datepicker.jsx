@@ -1,138 +1,113 @@
+import { useState } from "react";
 import styles from "./styles.module.css";
+import Daypicker from "../Daypicker/Daypicker";
+import Monthpicker from "../Monthpicker/Monthpicker";
 
-const Datepicker = ({
-  changePicker,
-  calendar,
-  selectedDate,
-  minimumYearVerification,
-  maximumYearVerification,
-}) => {
-  const weekDays = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+export default function Datepicker({ interval }) {
+  const [datepickerType, setDateickerType] = useState(true);
+  const today = new Date();
+  const [selectedDate, setSelectedDate] = useState({
+    year: today.getFullYear(),
+    month: today.getMonth(),
+    day: [today.getDate()],
+  });
 
-  function getFirstDayOfWeek(month, year) {
-    const date = new Date(Date.UTC(year, month, 1));
-    return date.getUTCDay();
+  function getDaysInMonth(year, month) {
+    return new Date(year, month, 0).getDate();
   }
 
-  const actualYearList = calendar.find(
-    (elem) => elem.year === selectedDate.year
-  );
-  //TODO last month dont have before
-  const beforeActualYearList = calendar.find(
-    (elem) => elem.year - 1 === selectedDate.year - 1
-  );
-  console.log(selectedDate.month);
-  const month = actualYearList.months[selectedDate.month].name;
-  const year = actualYearList.year;
+  function getMonthList(year) {
+    const months = [
+      { name: "Janeiro", days: getDaysInMonth(year, 1) },
+      { name: "Fevereiro", days: getDaysInMonth(year, 2) },
+      { name: "Março", days: getDaysInMonth(year, 3) },
+      { name: "Abril", days: getDaysInMonth(year, 4) },
+      { name: "Maio", days: getDaysInMonth(year, 5) },
+      { name: "Junho", days: getDaysInMonth(year, 6) },
+      { name: "Julho", days: getDaysInMonth(year, 7) },
+      { name: "Agosto", days: getDaysInMonth(year, 8) },
+      { name: "Setembro", days: getDaysInMonth(year, 9) },
+      { name: "Outubro", days: getDaysInMonth(year, 10) },
+      { name: "Novembro", days: getDaysInMonth(year, 11) },
+      { name: "Dezembro", days: getDaysInMonth(year, 12) },
+    ];
+    return months;
+  }
 
-  const firstDay = getFirstDayOfWeek(selectedDate.month, selectedDate.year);
-
-  const getFirstRow = () => {
-    const row = [];
-
-    const lastMonthSize = firstDay;
-    const actualMonthFirstRowSize = 7 - firstDay;
-    let lastMonthDays =
-      beforeActualYearList.months[selectedDate.month].days - firstDay;
-    //last month
-    for (let i = 0; i < lastMonthSize; i++) {
-      lastMonthDays++;
-      row.push({ type: "last", day: lastMonthDays });
+  function getYearList(startYear, endYear) {
+    const years = [];
+    for (let year = startYear; year <= endYear; year++) {
+      const months = getMonthList(year);
+      years.push({ year, months });
     }
+    return years;
+  }
 
-    //first row actual month
-    for (let i = 0; i < actualMonthFirstRowSize; i++) {
-      row.push({ type: "actual", day: i + 1 });
-    }
+  const calendar = getYearList(interval.begin, interval.end);
 
-    return row;
+  const changePicker = () => {
+    setDateickerType((prev) => !prev);
   };
 
-  const getDaysMatrixAfterFirstRow = () => {
-    let rows,
-      columns = 7;
-    const daysOfMonthOfActualYear =
-      actualYearList.months[selectedDate.month].days;
-    const startOfSecondLine = 7 - firstDay + 1;
-
-    const daysFromSecondLine = daysOfMonthOfActualYear - (7 - firstDay);
-    rows = Math.ceil(daysFromSecondLine / 7);
-    let count = startOfSecondLine;
-    let type = "actual";
-
-    const daysMatrixRows = [getFirstRow()];
-    let daysMatrixColumns = [];
-    for (let i = 0; i < rows; i++) {
-      for (let j = 0; j < columns; j++) {
-        daysMatrixColumns.push({ type, day: count });
-        if (count >= daysOfMonthOfActualYear) {
-          count = 0;
-          type = "next";
-        }
-        count++;
-      }
-      daysMatrixRows.push(daysMatrixColumns);
-      daysMatrixColumns = [];
-    }
-
-    return daysMatrixRows;
+  const changeDate = (obj) => {
+    setSelectedDate((prev) => ({ ...prev, ...obj }));
   };
 
-  const matrixDays = getDaysMatrixAfterFirstRow();
+  const minimumYearVerification = (month = null) => {
+    if (
+      (month === 11 && selectedDate.year - 1 < interval.begin) ||
+      (month !== null && selectedDate.year - 1 < interval.begin)
+    ) {
+      alert("Já está no ano mínimo");
+      return;
+    }
+
+    if (month === 11) {
+      changeDate({ month, year: selectedDate.year - 1 });
+      return;
+    } else if (month !== null) {
+      changeDate({ month });
+      return;
+    }
+
+    changeDate({ year: selectedDate.year - 1 });
+  };
+
+  const maximumYearVerification = (month = null) => {
+    if (month === 12 && selectedDate.year + 1 > interval.end) {
+      alert("Já está no ano máximo");
+      return;
+    }
+    if (month === 12) {
+      changeDate({ month: 0, year: selectedDate.year + 1 });
+      return;
+    } else if (month !== null) {
+      changeDate({ month });
+      return;
+    }
+
+    changeDate({ year: selectedDate.year - 1 });
+  };
+
   return (
-    <div>
-      <div>
-        <span
-          onClick={() => {
-            const month = selectedDate.month - 1;
-            if (month === -1) minimumYearVerification(11);
-            else minimumYearVerification(selectedDate.month - 1);
-          }}
-        >
-          {"<-"}
-        </span>
-        <div onClick={changePicker}>
-          {month} {year}
-        </div>
-        <span
-          onClick={() => {
-            const month = selectedDate.month + 1;
-            if (month === 12) maximumYearVerification(12);
-            else maximumYearVerification(selectedDate.month + 1);
-          }}
-        >
-          {"->"}
-        </span>
-      </div>
-      <table className={styles.calendar}>
-        <thead>
-          <tr>
-            {weekDays.map((day) => (
-              <th key={day}>{day}</th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {/* {[
-            ...new Array(
-              actualYearList.months[selectedDate.month].days + firstDay
-            ),
-          ].map((_, index) => {
-            return <tr key={index}>{index + 1}</tr>;
-          })} */}
-          {matrixDays.map((_, i) => {
-            return (
-              <tr key={i}>
-                {matrixDays[i].map((elem, j) => {
-                  return <td key={j}>{elem.day}</td>;
-                })}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
+    <main className={styles.main}>
+      {datepickerType ? (
+        <Daypicker
+          changePicker={changePicker}
+          calendar={calendar}
+          selectedDate={selectedDate}
+          minimumYearVerification={minimumYearVerification}
+          maximumYearVerification={maximumYearVerification}
+        />
+      ) : (
+        <Monthpicker
+          changePicker={changePicker}
+          calendar={calendar}
+          selectedDate={selectedDate}
+          interval={interval}
+          changeDate={changeDate}
+        />
+      )}
+    </main>
   );
-};
-
-export default Datepicker;
+}
