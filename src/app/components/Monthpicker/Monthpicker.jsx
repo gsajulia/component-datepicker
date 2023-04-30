@@ -8,6 +8,8 @@ const Monthpicker = ({
   selectedDate,
   changeDate,
   interval,
+  minimumYearVerification,
+  maximumYearVerification,
 }) => {
   const actualYearList = calendar.find(
     (elem) => elem.year === selectedDate.year
@@ -43,29 +45,9 @@ const Monthpicker = ({
   return (
     <div>
       <div>
-        <span
-          onClick={() => {
-            if (selectedDate.year - 1 <= interval.begin) {
-              alert("Já está no ano mínimo");
-              return;
-            }
-            changeDate("year", selectedDate.year - 1);
-          }}
-        >
-          {"<-"}
-        </span>
+        <span onClick={minimumYearVerification}>{"<-"}</span>
         <div onClick={changePicker}>{actualYearList.year}</div>
-        <span
-          onClick={() => {
-            if (selectedDate.year + 1 >= interval.end) {
-              alert("Já está no ano máximo");
-              return;
-            }
-            changeDate("year", selectedDate.year + 1);
-          }}
-        >
-          {"->"}
-        </span>
+        <span onClick={maximumYearVerification}>{"->"}</span>
       </div>
       <div>
         <div style={{ display: "flex" }}>{tableLine(0, 3)}</div>

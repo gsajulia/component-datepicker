@@ -44,6 +44,7 @@ export default function Home() {
       const months = getMonthList(year);
       years.push({ year, months });
     }
+    console.log(years);
     return years;
   }
 
@@ -54,19 +55,48 @@ export default function Home() {
     setDateickerType((prev) => !prev);
   };
 
-  const changeDate = (key, value) => {
-    setSelectedDate((prev) => ({ ...prev, [key]: value }));
+  const changeDate = (obj) => {
+    setSelectedDate((prev) => ({ ...prev, obj }));
+  };
+
+  const minimumYearVerification = (month = null) => {
+    if (month !== null) {
+      changeDate({ month });
+      return;
+    }
+    if (selectedDate.year - 1 <= interval.begin) {
+      // alert("Já está no ano mínimo");
+      return;
+    }
+
+    changeDate({ year: selectedDate.year - 1 });
+  };
+
+  const maximumYearVerification = (month = null) => {
+    debugger;
+    if (month !== null) {
+      changeDate({ month });
+      return;
+    }
+    if (selectedDate.year + 1 >= interval.end) {
+      alert("Já está no ano máximo");
+      return;
+    }
+
+    changeDate({ year: selectedDate.year - 1 });
   };
 
   return (
     <main className={styles.main}>
-      {datepickerType ? (
+      {/* {datepickerType ? (
         <Datepicker
           changePicker={changePicker}
           calendar={calendar}
           selectedDate={selectedDate}
           changeDate={changeDate}
           interval={interval}
+          minimumYearVerification={minimumYearVerification}
+          maximumYearVerification={maximumYearVerification}
         />
       ) : (
         <Monthpicker
@@ -75,8 +105,10 @@ export default function Home() {
           selectedDate={selectedDate}
           changeDate={changeDate}
           interval={interval}
+          minimumYearVerification={minimumYearVerification}
+          maximumYearVerification={maximumYearVerification}
         />
-      )}
+      )} */}
     </main>
   );
 }

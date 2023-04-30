@@ -6,6 +6,8 @@ const Datepicker = ({
   selectedDate,
   changeDate,
   interval,
+  minimumYearVerification,
+  maximumYearVerification,
 }) => {
   const weekDays = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
@@ -85,16 +87,8 @@ const Datepicker = ({
         <span
           onClick={() => {
             const month = selectedDate.month - 1;
-            if (month === -1 && selectedDate.year - 1 > interval.begin) {
-              alert("Já está no ano mínimo");
-              return;
-            }
-            if (month === -1) {
-              changeDate("year", selectedDate.year - 1);
-              changeDate("month", 12);
-            } else {
-              changeDate("month", selectedDate.month - 1);
-            }
+            if (month === -1) minimumYearVerification(12);
+            else minimumYearVerification(selectedDate.month - 1);
           }}
         >
           {"<-"}
@@ -105,15 +99,8 @@ const Datepicker = ({
         <span
           onClick={() => {
             const month = selectedDate.month + 1;
-            if (month === 12 && selectedDate.year + 1 > interval.end) {
-              alert("Já está no ano máximo");
-              return;
-            }
-            if (month === 12) {
-              changeDate("year", selectedDate.year + 1);
-            } else {
-              changeDate("month", selectedDate.month + 1);
-            }
+            if (month === 12) maximumYearVerification(12);
+            else maximumYearVerification(selectedDate.month + 1);
           }}
         >
           {"->"}
