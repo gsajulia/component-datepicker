@@ -6,8 +6,6 @@ const Monthpicker = ({
   changePicker,
   calendar,
   selectedDate,
-  changeDate,
-  interval,
   minimumYearVerification,
   maximumYearVerification,
 }) => {

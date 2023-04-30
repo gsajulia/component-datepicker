@@ -4,8 +4,6 @@ const Datepicker = ({
   changePicker,
   calendar,
   selectedDate,
-  changeDate,
-  interval,
   minimumYearVerification,
   maximumYearVerification,
 }) => {
@@ -23,7 +21,7 @@ const Datepicker = ({
   const beforeActualYearList = calendar.find(
     (elem) => elem.year - 1 === selectedDate.year - 1
   );
-
+  console.log(selectedDate.month);
   const month = actualYearList.months[selectedDate.month].name;
   const year = actualYearList.year;
 
@@ -87,7 +85,7 @@ const Datepicker = ({
         <span
           onClick={() => {
             const month = selectedDate.month - 1;
-            if (month === -1) minimumYearVerification(12);
+            if (month === -1) minimumYearVerification(11);
             else minimumYearVerification(selectedDate.month - 1);
           }}
         >

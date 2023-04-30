@@ -44,11 +44,10 @@ export default function Home() {
       const months = getMonthList(year);
       years.push({ year, months });
     }
-    console.log(years);
     return years;
   }
 
-  const interval = { begin: 2022, end: 2023 };
+  const interval = { begin: 2020, end: 2023 };
   const calendar = getYearList(interval.begin, interval.end);
 
   const changePicker = () => {
@@ -56,16 +55,20 @@ export default function Home() {
   };
 
   const changeDate = (obj) => {
-    setSelectedDate((prev) => ({ ...prev, obj }));
+    setSelectedDate((prev) => ({ ...prev, ...obj }));
   };
 
   const minimumYearVerification = (month = null) => {
-    if (month !== null) {
-      changeDate({ month });
+    if (month === 11 && selectedDate.year - 1 < interval.begin) {
+      alert("Já está no ano mínimo");
       return;
     }
-    if (selectedDate.year - 1 <= interval.begin) {
-      // alert("Já está no ano mínimo");
+
+    if (month === 11) {
+      changeDate({ month, year: selectedDate.year - 1 });
+      return;
+    } else if (month !== null) {
+      changeDate({ month });
       return;
     }
 
@@ -73,13 +76,15 @@ export default function Home() {
   };
 
   const maximumYearVerification = (month = null) => {
-    debugger;
-    if (month !== null) {
-      changeDate({ month });
+    if (month === 12 && selectedDate.year + 1 > interval.end) {
+      alert("Já está no ano máximo");
       return;
     }
-    if (selectedDate.year + 1 >= interval.end) {
-      alert("Já está no ano máximo");
+    if (month === 12) {
+      changeDate({ month: 0, year: selectedDate.year + 1 });
+      return;
+    } else if (month !== null) {
+      changeDate({ month });
       return;
     }
 
@@ -93,8 +98,6 @@ export default function Home() {
           changePicker={changePicker}
           calendar={calendar}
           selectedDate={selectedDate}
-          changeDate={changeDate}
-          interval={interval}
           minimumYearVerification={minimumYearVerification}
           maximumYearVerification={maximumYearVerification}
         />
@@ -103,9 +106,7 @@ export default function Home() {
           changePicker={changePicker}
           calendar={calendar}
           selectedDate={selectedDate}
-          changeDate={changeDate}
-          interval={interval}
-          minimumYearVerification={minimumYearVerification}
+          minimumYearjVerification={minimumYearVerification}
           maximumYearVerification={maximumYearVerification}
         />
       )}
