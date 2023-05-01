@@ -33,7 +33,11 @@ const Monthpicker = ({
       (month, index) =>
         index >= begin &&
         index < end && (
-          <div key={month} style={{ background: getCellColor(index) }}>
+          <div
+            onClick={() => changeDate({ month: index })}
+            key={month}
+            style={{ background: getCellColor(index) }}
+          >
             {month}
           </div>
         )
