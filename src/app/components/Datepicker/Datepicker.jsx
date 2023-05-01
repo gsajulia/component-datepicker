@@ -9,7 +9,7 @@ export default function Datepicker({ interval }) {
   const [selectedDate, setSelectedDate] = useState({
     year: today.getFullYear(),
     month: today.getMonth(),
-    day: [today.getDate()],
+    day: [],
   });
 
   function getDaysInMonth(year, month) {
@@ -89,6 +89,10 @@ export default function Datepicker({ interval }) {
     changeDate({ year: selectedDate.year - 1 });
   };
 
+  const getIntervalByMonth = (type) => {
+    return selectedDate.day.map((elem) => elem.type === type && elem.day);
+  };
+
   return (
     <main className={styles.main}>
       {datepickerType ? (
@@ -98,6 +102,7 @@ export default function Datepicker({ interval }) {
           selectedDate={selectedDate}
           minimumYearVerification={minimumYearVerification}
           maximumYearVerification={maximumYearVerification}
+          changeDate={changeDate}
         />
       ) : (
         <Monthpicker
@@ -108,6 +113,11 @@ export default function Datepicker({ interval }) {
           changeDate={changeDate}
         />
       )}
+      {getIntervalByMonth("last")}
+      {getIntervalByMonth("actual")}
+      {getIntervalByMonth("next")}
+      {selectedDate.month}
+      {selectedDate.year}
     </main>
   );
 }

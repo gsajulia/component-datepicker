@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getPosition, getMatrixIndex } from "@/app/utils/array";
 
-function DraggableSection({ matrixDays }) {
+function DraggableSection({ matrixDays, changeDate }) {
   const [selectedDays, setSelectedDays] = useState([]);
 
   const handleDragStart = (e, day, i, j) => {
     setSelectedDays([]);
-    setSelectedDays([{ day, index: getPosition(i, j) }]);
+    setSelectedDays([{ day, index: getPosition(i, j, matrixDays[0].length) }]);
   };
 
   const handleDragOver = (e) => {
@@ -14,7 +15,10 @@ function DraggableSection({ matrixDays }) {
 
   const handleDragEnter = (e, day, i, j) => {
     if (!selectedDays.includes(day)) {
-      setSelectedDays([...selectedDays, { day, index: getPosition(i, j) }]);
+      setSelectedDays([
+        ...selectedDays,
+        { day, index: getPosition(i, j, matrixDays[0].length) },
+      ]);
     }
   };
 
@@ -23,18 +27,38 @@ function DraggableSection({ matrixDays }) {
     const minIndex = Math.min(...indices);
     const maxIndex = Math.max(...indices);
 
-    const actualPosition = getPosition(i, j);
+    const actualPosition = getPosition(i, j, matrixDays[0].length);
 
     if (actualPosition >= minIndex && actualPosition <= maxIndex)
       return "selected";
     return "";
   };
 
-  function getPosition(i, j) {
-    return i * matrixDays[0].length + j;
-  }
+  useEffect(() => {
+    const changeDateWithDragDays = (selected) => {
+      let days = [];
+      const indices = selected.map((day) => day.index);
+      const minIndex = Math.min(...indices);
+      const maxIndex = Math.max(...indices);
 
-  console.log(selectedDays);
+      if (minIndex === maxIndex) {
+        const position = getMatrixIndex(minIndex, matrixDays[0].length);
+        const { row, col } = position;
+        days.push(matrixDays[row][col]);
+      } else {
+        for (let i = minIndex; i <= maxIndex; i++) {
+          const position = getMatrixIndex(i, matrixDays[0].length);
+          const { row, col } = position;
+          days.push({ ...matrixDays[row][col], row, col });
+        }
+      }
+      return days;
+    };
+
+    const days = changeDateWithDragDays(selectedDays);
+
+    changeDate({ day: days });
+  }, [selectedDays]);
 
   return matrixDays.map((_, i) => {
     return (
@@ -48,7 +72,7 @@ function DraggableSection({ matrixDays }) {
                   getDayClassName(i, j) === "selected" ? "pink" : "none",
               }}
               draggable={true}
-              onClick={(e) => handleDragStart(e, elem.day, i, j)}
+              // onClick={(e) => handleDragStart(e, elem.day, i, j)}
               onDragStart={(e) => handleDragStart(e, elem.day, i, j)}
               onDragOver={handleDragOver}
               onDragEnter={(e) => handleDragEnter(e, elem.day, i, j)}

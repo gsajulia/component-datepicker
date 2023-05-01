@@ -7,6 +7,7 @@ const Daypicker = ({
   selectedDate,
   minimumYearVerification,
   maximumYearVerification,
+  changeDate,
 }) => {
   const weekDays = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
@@ -113,7 +114,7 @@ const Daypicker = ({
           </tr>
         </thead>
         <tbody>
-          <DraggableSection matrixDays={matrixDays} />
+          <DraggableSection matrixDays={matrixDays} changeDate={changeDate} />
         </tbody>
       </table>
     </div>
