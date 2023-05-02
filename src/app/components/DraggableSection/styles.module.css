@@ -1,0 +1,22 @@
+.lastOrNextMonthDays {
+  font-size: 16px;
+  line-height: 16px;
+  color: rgba(102, 102, 102, 0.6);
+}
+
+.cell {
+  border: none;
+}
+
+.cell:hover:not(.selected):not(:active) {
+  border-radius: 0.5rem !important;
+  background-color: var(--light-purple) !important;
+  cursor: pointer;
+}
+
+.cell img {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+}

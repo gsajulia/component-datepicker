@@ -1,5 +1,9 @@
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { getPosition, getMatrixIndex } from "@/app/utils/array";
+import styles from "./styles.module.css";
+import dropdown from "../../../../public/arrow-drop-down.svg";
+import dot from "../../../../public/dot.svg";
 
 function DraggableSection({ matrixDays, changeDate }) {
   const [selectedDays, setSelectedDays] = useState([]);
@@ -30,8 +34,19 @@ function DraggableSection({ matrixDays, changeDate }) {
     const actualPosition = getPosition(i, j, matrixDays[0].length);
 
     if (actualPosition >= minIndex && actualPosition <= maxIndex)
-      return "selected";
-    return "";
+      return {
+        selection: "selected",
+        position:
+          actualPosition === minIndex
+            ? "min"
+            : actualPosition === maxIndex
+            ? "max"
+            : "middle",
+      };
+    return {
+      selection: "",
+      position: "",
+    };
   };
 
   useEffect(() => {
@@ -64,20 +79,38 @@ function DraggableSection({ matrixDays, changeDate }) {
     return (
       <tr key={i}>
         {matrixDays[i].map((elem, j) => {
+          const style = getDayClassName(i, j);
           return (
             <td
               key={j}
               style={{
-                background:
-                  getDayClassName(i, j) === "selected" ? "pink" : "none",
+                borderTopLeftRadius: style.position === "min" ? ".5rem" : "0",
+                borderBottomLeftRadius:
+                  style.position === "min" ? ".5rem" : "0",
+                borderTopRightRadius: style.position === "max" ? ".5rem" : "0",
+                borderBottomRightRadius:
+                  style.position === "max" ? ".5rem" : "0",
+                background: style.selection === "selected" ? "#6200EE" : "none",
+                color: style.selection === "selected" && "white",
               }}
               draggable={true}
+              className={`
+                ${
+                  elem.type === "last" || elem.type === "next"
+                    ? styles.lastOrNextMonthDays
+                    : ""
+                } ${styles.cell} ${
+                style.position === "min" ? styles.actualCircle : ""
+              }`}
               // onClick={(e) => handleDragStart(e, elem.day, i, j)}
               onDragStart={(e) => handleDragStart(e, elem.day, i, j)}
               onDragOver={handleDragOver}
               onDragEnter={(e) => handleDragEnter(e, elem.day, i, j)}
             >
               {elem.day}
+              {style.position === "min" && (
+                <Image src={dot} alt="dot" width={4} height={4} priority />
+              )}
             </td>
           );
         })}

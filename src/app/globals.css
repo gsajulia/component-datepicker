@@ -1,13 +1,50 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
 }
 
+td {
+  position: relative; /* torna o elemento pai posicionado */
+}
+
+td::after {
+  content: "";
+  width: 0.5px;
+  height: 0.5px;
+  border-radius: 50%;
+  background-color: black;
+  position: absolute;
+  bottom: -2px; /* posiciona o círculo abaixo do texto */
+  left: 50%; /* centraliza horizontalmente */
+  transform: translateX(-50%); /* ajusta a posição horizontalmente */
+}
+
+:root {
+  --deep-purple: #6200ee;
+  --light-purple: #ece0fd;
+  --medium-gray: #666666;
+  --dark-gray: #333333;
+  --white: #fff;
+  --white-100: #f5f5f5;
+}
+
+table {
+  border-spacing: 0 10px; /* 10px spacing between rows, no spacing between columns */
+}
+
 html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  background: var(--white-100);
+  font-family: "Lato";
+  font-weight: 400;
+  font-style: normal;
+  color: var(--medium-gray);
 }
 
 a {

@@ -1,5 +1,9 @@
 import DraggableSection from "../DraggableSection/DraggableSection";
 import styles from "./styles.module.css";
+import Image from "next/image";
+import arrowLeft from "../../../../public/chevron-left.svg";
+import arrowRight from "../../../../public/chevron-right.svg";
+import dropdown from "../../../../public/arrow-drop-down.svg";
 
 const Daypicker = ({
   changePicker,
@@ -81,8 +85,8 @@ const Daypicker = ({
 
   const matrixDays = getDaysMatrixAfterFirstRow();
   return (
-    <div>
-      <div>
+    <div className={styles.box}>
+      <div className={styles.header}>
         <span
           onClick={() => {
             const month = selectedDate.month - 1;
@@ -90,10 +94,25 @@ const Daypicker = ({
             else minimumYearVerification(selectedDate.month - 1);
           }}
         >
-          {"<-"}
+          <Image
+            src={arrowLeft}
+            alt="Arrow left"
+            width={24}
+            height={24}
+            priority
+          />
         </span>
-        <div onClick={changePicker}>
-          {month} {year}
+        <div className={styles.calendarMonthYear} onClick={changePicker}>
+          <>
+            {month} {year}
+          </>
+          <Image
+            src={dropdown}
+            alt="Dropdown icon"
+            width={24}
+            height={24}
+            priority
+          />
         </div>
         <span
           onClick={() => {
@@ -102,12 +121,18 @@ const Daypicker = ({
             else maximumYearVerification(selectedDate.month + 1);
           }}
         >
-          {"->"}
+          <Image
+            src={arrowRight}
+            alt="Arrow right"
+            width={24}
+            height={24}
+            priority
+          />
         </span>
       </div>
       <table className={styles.calendar}>
         <thead>
-          <tr>
+          <tr className={styles.weekDays}>
             {weekDays.map((day) => (
               <th key={day}>{day}</th>
             ))}

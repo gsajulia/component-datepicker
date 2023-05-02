@@ -4,7 +4,6 @@
 
 .calendar tbody td {
   text-align: center;
-  border: 1px solid black;
   padding: 0.5rem;
 }
 
@@ -14,4 +13,35 @@
 
 .calendar tbody tr:first-child td {
   border-top: none;
+}
+
+.box {
+  background-color: var(--white);
+  box-shadow: 0px 8px 32px rgba(0, 0, 0, 0.16);
+  border-radius: 16px;
+  padding: 2rem;
+}
+
+.header {
+  padding-bottom: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  color: var(--dark-gray);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.weekDays {
+  color: var(--medium-gray);
+  font-style: normal;
+  font-size: 12px;
+  line-height: 16px;
+  font-family: "Roboto";
+}
+
+.calendarMonthYear {
+  display: flex;
+  justify-content: center;
+  padding-left: 12px;
 }
