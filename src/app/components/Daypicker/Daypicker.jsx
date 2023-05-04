@@ -23,7 +23,6 @@ const Daypicker = ({
   const actualYearList = calendar.find(
     (elem) => elem.year === selectedDate.year
   );
-  //TODO last month dont have before
   const beforeActualYearList = calendar.find(
     (elem) => elem.year - 1 === selectedDate.year - 1
   );
@@ -38,7 +37,9 @@ const Daypicker = ({
     const lastMonthSize = firstDay;
     const actualMonthFirstRowSize = 7 - firstDay;
     let lastMonthDays =
-      beforeActualYearList.months[selectedDate.month].days - firstDay;
+      beforeActualYearList.months[
+        selectedDate.month === 0 ? 11 : selectedDate.month - 1
+      ].days - firstDay;
     //last month
     for (let i = 0; i < lastMonthSize; i++) {
       lastMonthDays++;

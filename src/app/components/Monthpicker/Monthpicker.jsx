@@ -1,6 +1,10 @@
 "use client";
 import { useState } from "react";
 import styles from "./styles.module.css";
+import Image from "next/image";
+import left from "../../../../public/chevron-left.svg";
+import right from "../../../../public/chevron-right.svg";
+import dot from "../../../../public/dot.svg";
 
 const Monthpicker = ({
   changePicker,
@@ -20,28 +24,32 @@ const Monthpicker = ({
   const getCellColor = (index) => {
     switch (index) {
       case selectedDate.month:
-        return "pink";
+        return "var(--deep-purple)";
       case new Date().getMonth():
-        return "gray";
+        return "none";
       default:
         return "none";
     }
   };
 
-  const tableLine = (begin, end) => {
-    return shortMonths.map(
-      (month, index) =>
-        index >= begin &&
-        index < end && (
-          <div
-            onClick={() => changeDate({ month: index })}
-            key={month}
-            style={{ background: getCellColor(index) }}
-          >
-            {month}
-          </div>
-        )
-    );
+  const tableLine = () => {
+    return shortMonths.map((month, index) => (
+      <div
+        className={styles.months}
+        onClick={() => changeDate({ month: index })}
+        key={month}
+        style={{
+          background: getCellColor(index),
+          color:
+            getCellColor(index) === "var(--deep-purple)" ? "white" : "initial",
+        }}
+      >
+        {month}
+        {selectedDate.month === index && (
+          <Image src={dot} alt="dot" width={4} height={4} priority />
+        )}
+      </div>
+    ));
   };
 
   const previousYear = () => {
@@ -55,17 +63,29 @@ const Monthpicker = ({
   };
 
   return (
-    <div>
-      <div>
-        <span onClick={previousYear}>{"<-"}</span>
-        <div onClick={changePicker}>{actualYearList.year}</div>
-        <span onClick={nextYear}>{"->"}</span>
+    <div className={styles.containerMonth}>
+      <div className={styles.headerMonth}>
+        <Image
+          className={styles.leftMonthHeader}
+          onClick={previousYear}
+          src={left}
+          alt="chevron left icon"
+          height={24}
+          width={24}
+        />
+        <div className={styles.yearHeaderMonth} onClick={changePicker}>
+          {actualYearList.year}
+        </div>
+        <Image
+          className={styles.rightMonthHeader}
+          onClick={nextYear}
+          src={right}
+          alt="chevron right icon"
+          height={24}
+          width={24}
+        />
       </div>
-      <div>
-        <div style={{ display: "flex" }}>{tableLine(0, 3)}</div>
-        <div style={{ display: "flex" }}>{tableLine(3, 6)}</div>
-        <div style={{ display: "flex" }}>{tableLine(6, 9)}</div>
-      </div>
+      <div className={styles.tableMonths}>{tableLine()}</div>
     </div>
   );
 };

@@ -1,0 +1,60 @@
+.containerMonth {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  background: var(--white);
+  box-shadow: 0px 8px 32px rgba(0, 0, 0, 0.16);
+  border-radius: 16px;
+}
+
+.headerMonth {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 20rem;
+  color: var(--dark-gray);
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.yearHeaderMonth:hover {
+  cursor: pointer;
+}
+
+.leftMonthHeader:hover {
+  cursor: pointer;
+}
+
+.rightMonthHeader:hover {
+  cursor: pointer;
+}
+
+.tableMonths {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-self: center;
+
+  grid-column-gap: 3rem;
+  grid-row-gap: 2rem;
+  margin-top: 2rem;
+}
+
+.months {
+  width: 4rem;
+  height: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.225rem;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.5rem !important;
+}
+
+.months:hover {
+  cursor: pointer;
+  border-radius: 0.5rem !important;
+  background-color: var(--light-purple) !important;
+}

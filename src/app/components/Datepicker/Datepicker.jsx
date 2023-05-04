@@ -3,12 +3,11 @@ import styles from "./styles.module.css";
 import Daypicker from "../Daypicker/Daypicker";
 import Monthpicker from "../Monthpicker/Monthpicker";
 
-export default function Datepicker({ interval }) {
+export default function Datepicker({ interval, date }) {
   const [datepickerType, setDateickerType] = useState(true);
-  const today = new Date();
   const [selectedDate, setSelectedDate] = useState({
-    year: today.getFullYear(),
-    month: today.getMonth(),
+    year: date.getFullYear(),
+    month: date.getMonth(),
     day: [],
   });
 
@@ -89,10 +88,9 @@ export default function Datepicker({ interval }) {
     changeDate({ year: selectedDate.year - 1 });
   };
 
-  const getIntervalByMonth = (type) => {
-    return selectedDate.day.map((elem) => elem.type === type && elem.day);
-  };
-
+  const actualYearList = calendar.find(
+    (elem) => elem.year === selectedDate.year
+  );
   return (
     <main className={styles.main}>
       {datepickerType ? (
@@ -113,11 +111,26 @@ export default function Datepicker({ interval }) {
           changeDate={changeDate}
         />
       )}
-      {getIntervalByMonth("last")}
-      {getIntervalByMonth("actual")}
-      {getIntervalByMonth("next")}
-      {selectedDate.month}
-      {selectedDate.year}
+      <div className={styles.outputInterval}>
+        <div className={styles.dataInterval}>
+          Intervalo:{" "}
+          <span>
+            {selectedDate.day.length > 1
+              ? `${selectedDate.day[0]?.day} - ${
+                  selectedDate.day[selectedDate.day.length - 1]?.day
+                }`
+              : !selectedDate?.day?.length === 1
+              ? `${selectedDate.day[0]?.day}`
+              : "nenhum"}
+          </span>
+        </div>
+        <div className={styles.dataInterval}>
+          Mês: <span>{actualYearList.months[selectedDate.month].name}</span>
+        </div>
+        <div className={styles.dataInterval}>
+          Ano: <span>{selectedDate.year}</span>
+        </div>
+      </div>
     </main>
   );
 }
