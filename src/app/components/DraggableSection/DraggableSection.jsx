@@ -39,7 +39,6 @@ function DraggableSection({ matrixDays, changeDate }) {
         : actualPosition === maxIndex
         ? "max"
         : "middle";
-    console.log(positionType);
     if (actualPosition >= minIndex && actualPosition <= maxIndex)
       return {
         selection: "selected",

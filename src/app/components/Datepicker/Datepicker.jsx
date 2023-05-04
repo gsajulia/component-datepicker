@@ -121,7 +121,7 @@ export default function Datepicker({ interval, date }) {
                 }`
               : !selectedDate?.day?.length === 1
               ? `${selectedDate.day[0]?.day}`
-              : "nenhum"}
+              : "Nenhum"}
           </span>
         </div>
         <div className={styles.dataInterval}>
