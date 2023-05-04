@@ -7,22 +7,6 @@
   margin: 0;
 }
 
-td {
-  position: relative; /* torna o elemento pai posicionado */
-}
-
-td::after {
-  content: "";
-  width: 0.5px;
-  height: 0.5px;
-  border-radius: 50%;
-  background-color: black;
-  position: absolute;
-  bottom: -2px; /* posiciona o círculo abaixo do texto */
-  left: 50%; /* centraliza horizontalmente */
-  transform: translateX(-50%); /* ajusta a posição horizontalmente */
-}
-
 :root {
   --deep-purple: #6200ee;
   --light-purple: #ece0fd;

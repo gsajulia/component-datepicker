@@ -30,18 +30,20 @@ function DraggableSection({ matrixDays, changeDate }) {
     const indices = selectedDays.map((day) => day.index);
     const minIndex = Math.min(...indices);
     const maxIndex = Math.max(...indices);
-
     const actualPosition = getPosition(i, j, matrixDays[0].length);
-
+    const positionType =
+      maxIndex === minIndex && minIndex == actualPosition
+        ? "equal"
+        : actualPosition === minIndex
+        ? "min"
+        : actualPosition === maxIndex
+        ? "max"
+        : "middle";
+    console.log(positionType);
     if (actualPosition >= minIndex && actualPosition <= maxIndex)
       return {
         selection: "selected",
-        position:
-          actualPosition === minIndex
-            ? "min"
-            : actualPosition === maxIndex
-            ? "max"
-            : "middle",
+        position: positionType,
       };
     return {
       selection: "",
@@ -84,12 +86,22 @@ function DraggableSection({ matrixDays, changeDate }) {
             <td
               key={j}
               style={{
-                borderTopLeftRadius: style.position === "min" ? ".5rem" : "0",
+                borderTopLeftRadius:
+                  style.position === "equal" || style.position === "min"
+                    ? ".5rem"
+                    : "0",
                 borderBottomLeftRadius:
-                  style.position === "min" ? ".5rem" : "0",
-                borderTopRightRadius: style.position === "max" ? ".5rem" : "0",
+                  style.position === "equal" || style.position === "min"
+                    ? ".5rem"
+                    : "0",
+                borderTopRightRadius:
+                  style.position === "equal" || style.position === "max"
+                    ? ".5rem"
+                    : "0",
                 borderBottomRightRadius:
-                  style.position === "max" ? ".5rem" : "0",
+                  style.position === "equal" || style.position === "max"
+                    ? ".5rem"
+                    : "0",
                 background: style.selection === "selected" ? "#6200EE" : "none",
                 color: style.selection === "selected" && "white",
               }}
