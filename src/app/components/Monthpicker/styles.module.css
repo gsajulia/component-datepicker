@@ -57,4 +57,5 @@
   cursor: pointer;
   border-radius: 0.5rem !important;
   background-color: var(--light-purple) !important;
+  color: var(--medium-gray);
 }

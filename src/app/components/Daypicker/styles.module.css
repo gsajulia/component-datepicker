@@ -32,6 +32,10 @@
   line-height: 24px;
 }
 
+.header img {
+  cursor: pointer;
+}
+
 .weekDays {
   color: var(--medium-gray);
   font-style: normal;
