@@ -20,6 +20,7 @@
   line-height: 24px;
 }
 
+/* header buttons */
 .yearHeaderMonth:hover {
   cursor: pointer;
 }
